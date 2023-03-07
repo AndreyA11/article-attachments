@@ -1,0 +1,40 @@
+# {{ ansible_managed }}
+
+ChallengeResponseAuthentication yes
+PubkeyAuthentication yes
+{% if duo_enabled %}
+AuthenticationMethods publickey,keyboard-interactive
+{% else %}
+AuthenticationMethods publickey
+{% endif %}
+MaxAuthTries 4
+UsePAM yes
+UseDNS no
+
+X11Forwarding no
+AllowTcpForwarding {{ (permit_tcp_forwarding) | ternary('yes', 'no') }}
+ClientAliveInterval 1800
+ClientAliveCountMax 2
+
+LogLevel INFO
+# AuthorizedKeysFile  /etc/ssh/authorized_keys/%u
+# AuthorizedKeysFile  /etc/ssh/authorized_keys
+PasswordAuthentication no
+PermitRootLogin no
+PermitEmptyPasswords no
+PermitUserEnvironment no
+IgnoreRhosts yes
+HostbasedAuthentication no
+RhostsRSAAuthentication no
+PermitTunnel no
+
+{% if ansible_facts.distribution == 'Ubuntu' %}
+Subsystem	sftp	/usr/lib/openssh/sftp-server
+{% endif %}
+{% if ansible_facts.distribution == 'Rocky' %}
+Subsystem	sftp	/usr/libexec/openssh/sftp-server
+{% endif %}
+{% if duo_enabled %}
+Match User admin
+    AuthenticationMethods publickey
+{% endif %}

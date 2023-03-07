@@ -1,0 +1,3 @@
+- name: Update certificates
+  ansible.builtin.shell:
+    cmd: update-ca-certificates --fresh

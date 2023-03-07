@@ -1,0 +1,21 @@
+# {{ ansible_managed }}
+network:
+  version: 2
+  renderer: networkd
+  ethernets:
+    eth1:
+      dhcp4-overrides:
+        use-routes: false
+      
+      routing-policy:
+      - from: {{ external_ip }}
+        table: 300
+        priority: 300
+      
+      routes:
+      - to: default
+        via: {{ external_gateway }}
+        table: 300
+
+      - to: {{ landysh_ext }}
+        via: {{ external_gateway }}

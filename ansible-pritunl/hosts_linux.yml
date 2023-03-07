@@ -1,0 +1,16 @@
+all:
+  children:
+    tier1:
+      children:
+        pritunl:
+          hosts:
+            # vpn-01-b:
+            #   ansible_host: vpn-01-b
+            #   external_ip: 10.10.20.3
+            #   external_gateway: 10.10.20.1
+            #   dc_prefix: "10.10"
+            vpn-01-c:
+              ansible_host: vpn-01-c
+              external_ip: 10.11.20.3
+              external_gateway: 10.11.20.1
+              dc_prefix: "10.11"

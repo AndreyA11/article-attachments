@@ -1,0 +1,16 @@
+domain_name: office.example.com
+example_com:
+- "93.184.216.34"
+landysh_com:
+- "10.10.15.3"
+mongodb_cluster: "rc1b-ghyesftjkiytexng.mdb.yandexcloud.net:27018,rc1c-hyrwscbnksfguyth.mdb.yandexcloud.net:27018"
+mongodb_cluster_rs: "rs01"
+rules_filter: ["{{ lookup('template', '../global_rules.j2') }}"]
+rules_nat: []
+vms_domain_controllers:
+- "10.10.11.3"
+- "10.11.11.3"
+vms_federation_servers:
+- "10.10.11.5"
+- "10.11.11.5"
+yandex_ca: false

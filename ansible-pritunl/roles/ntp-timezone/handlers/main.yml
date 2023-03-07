@@ -1,0 +1,4 @@
+- name: Restart systemd-timesyncd
+  ansible.builtin.systemd:
+    state: restarted
+    name: systemd-timesyncd

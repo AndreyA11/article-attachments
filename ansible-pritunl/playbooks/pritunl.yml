@@ -1,0 +1,7 @@
+- hosts: pritunl
+  roles:
+  - ca
+  - ntp-timezone
+  - pritunl
+  - iptables-global
+  become: yes

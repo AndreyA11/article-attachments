@@ -1,0 +1,9 @@
+{
+  "debug": false,
+  "bind_addr": "0.0.0.0",
+  "port": 8443,
+  "log_path": "/var/log/pritunl.log",
+  "temp_path": "/tmp/pritunl_%r",
+  "local_address_interface": "auto",
+  "mongodb_uri": "mongodb://pritunl:{{ db_password.value + "@" + mongodb_cluster + "/pritunl?replicaSet=" + mongodb_cluster_rs }}&authSource=pritunl&ssl=true"
+}

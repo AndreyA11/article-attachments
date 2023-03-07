@@ -1,0 +1,19 @@
+#!/bin/sh
+# {{ ansible_managed }}
+#
+#    00-header - create the header of the MOTD
+#    Copyright (C) 2009-2010 Canonical Ltd.
+#
+#    Authors: Dustin Kirkland <kirkland@canonical.com>
+
+[ -r /etc/lsb-release ] && . /etc/lsb-release
+
+if [ -z "$DISTRIB_DESCRIPTION" ] && [ -x /usr/bin/lsb_release ]; then
+	# Fall back to using the very slow lsb_release utility
+	DISTRIB_DESCRIPTION=$(lsb_release -s -d)
+fi
+
+printf "\n"
+printf "This system is owned by {{ company_name }}.\n If you are not authorized to access this system exit immediately.\n Unauthorized access to this system is forbidden by company policies, national, and international laws.\n Unauthorized users are subject to criminal and civil penalties as well as company-initiated disciplinary proceedings.\n By entering into this system you acknowledge that you are authorized to access and the level of privilege you subsequently execute on this system.\n You further acknowledge that by entering into this system you expect no privacy from monitoring.\n"
+printf "\n"
+printf "Welcome to %s (%s %s %s)\n" "$DISTRIB_DESCRIPTION" "$(uname -o)" "$(uname -r)" "$(uname -m)\n"

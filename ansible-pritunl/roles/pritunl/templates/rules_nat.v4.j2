@@ -1,0 +1,8 @@
+# Network mapping
+-A PREROUTING -d {{ dc_prefix }}.64.0/18 -i eth0 -j NETMAP --to 10.140.64.0/18
+-A POSTROUTING -s 10.140.64.0/18 -o eth0 -j NETMAP --to {{ dc_prefix }}.64.0/18
+-A PREROUTING -d {{ dc_prefix }}.64.0/18 -i eth2 -j NETMAP --to 10.140.64.0/18
+-A POSTROUTING -s 10.140.64.0/18 -o eth2 -j NETMAP --to {{ dc_prefix }}.64.0/18
+
+-A POSTROUTING -s 10.140.64.0/18 -o eth1 -j MASQUERADE
+-A PREROUTING -i eth1 -p tcp -m tcp --dport 8443 -j REDIRECT --to-port 443

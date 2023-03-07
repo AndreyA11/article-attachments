@@ -1,0 +1,11 @@
+- hosts: test
+  # strategy: free
+  roles:
+  - repo-and-packages
+  - ntp-timezone
+  - users
+  - ssh-duo
+  - motd
+  - ca
+  - firewall
+  become: True

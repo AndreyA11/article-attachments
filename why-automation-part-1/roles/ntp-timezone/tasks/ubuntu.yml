@@ -1,0 +1,17 @@
+# In case you need to configure own NTP server
+- name: Configure timesync
+  ansible.builtin.template:
+    src: timesyncd.conf.j2
+    dest: /etc/systemd/timesyncd.conf
+  notify: Restart systemd-timesyncd
+  when: set_LocalNTP
+
+- name: Enable NTP
+  ansible.builtin.service:
+    name: systemd-timesyncd
+    enabled: yes
+    state: started
+
+- name: Set timezone
+  community.general.timezone:
+    name: "{{ timezone }}"

@@ -1,0 +1,2 @@
+# {{ ansible_managed }}
+* * * * * root /bin/bash -c 'if [ $(/usr/bin/grep -c pritunl <(/usr/sbin/iptables-save)) -ne 0 ]; then /usr/sbin/iptables-restore /etc/iptables/rules.v4; fi'

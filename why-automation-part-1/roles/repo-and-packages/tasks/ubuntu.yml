@@ -1,0 +1,26 @@
+- name: Set default repos
+  ansible.builtin.template:
+    src: sources.list.j2
+    dest: /etc/apt/sources.list
+
+- name: Upgrade
+  ansible.builtin.apt:
+    update_cache: yes
+    upgrade: yes
+
+- name: Install packages
+  ansible.builtin.apt:
+    update_cache: yes
+    name:
+      - htop
+      - iotop
+
+- name: Check if reboot-requied file exists
+  stat:
+    path: /var/run/reboot-required
+  register: rr
+
+- name: Reboot message
+  ansible.builtin.debug:
+    msg: 'Reboot required but skipped'
+  when: rr.stat.exists

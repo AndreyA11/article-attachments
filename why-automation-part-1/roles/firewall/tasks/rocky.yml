@@ -1,0 +1,11 @@
+- name: Allow ssh in default zone
+  ansible.posix.firewalld:
+    service: ssh
+    permanent: true
+    state: enabled
+
+- name: Enable firewalld
+  ansible.builtin.service:
+    name: firewalld
+    enabled: yes
+    state: started

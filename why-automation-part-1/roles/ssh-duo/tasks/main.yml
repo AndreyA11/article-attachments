@@ -1,0 +1,63 @@
+- name: Duo for Ubuntu
+  when: duo_enabled and ansible_facts.distribution == 'Ubuntu'
+  block:
+    - name: Add Duo repo
+      ansible.builtin.template:
+        src: duosecurity.list.j2
+        dest: /etc/apt/sources.list.d/duosecurity.list
+
+    - name: Add Duo repo keys
+      ansible.builtin.apt_key:
+        data: "{{ lookup('file', '../templates/DUO-GPG-PUBLIC-KEY.asc') }}"
+
+    - name: Install duo-unix
+      ansible.builtin.apt:
+        name: duo-unix
+        update_cache: yes
+
+    - name: Create Duo configuration
+      ansible.builtin.template:
+        src: pam_duo.conf.j2
+        dest: /etc/duo/pam_duo.conf
+
+- name: Configure pam.d for SSH
+  ansible.builtin.template:
+    src: pam.d_sshd.j2
+    dest: /etc/pam.d/sshd
+  notify: Reload sshd
+  when: ansible_facts.distribution == 'Ubuntu'
+
+- name: Duo for Rocky
+  when: duo_enabled and ansible_facts.distribution == 'Rocky'
+  block:
+    - name: Add Duo repo
+      ansible.builtin.template:
+        src: duosecurity.repo.j2
+        dest: /etc/yum.repos.d/duosecurity.repo
+
+    - name: Add Duo repo keys
+      ansible.builtin.rpm_key:
+        key: https://duo.com/DUO-GPG-PUBLIC-KEY.asc
+
+    - name: Install duo-unix
+      ansible.builtin.dnf:
+        name: duo-unix
+        update_cache: yes
+
+    - name: Create Duo configuration
+      ansible.builtin.template:
+        src: pam_duo.conf.j2
+        dest: /etc/duo/pam_duo.conf
+
+- name: Configure pam.d for SSH
+  ansible.builtin.template:
+    src: pam.d_sshd_rocky.j2
+    dest: /etc/pam.d/sshd
+  notify: Reload sshd
+  when: ansible_facts.distribution == 'Rocky'
+
+- name: Configure SSH server
+  ansible.builtin.template:
+    src: sshd_config.j2
+    dest: /etc/ssh/sshd_config
+  notify: Reload sshd

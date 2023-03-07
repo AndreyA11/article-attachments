@@ -1,0 +1,33 @@
+- name: Enable fastest
+  ansible.builtin.template:
+    src: dnf.conf.j2
+    dest: /etc/dnf/dnf.conf
+
+- name: Upgrade
+  ansible.builtin.dnf:
+    name:  "*"
+    state: latest
+
+- name: Install epel-release
+  ansible.builtin.dnf:
+    name: epel-release
+
+- name: Install packages
+  ansible.builtin.dnf:
+    name:
+      - epel-release
+      - htop
+      - iotop
+
+- name: Reboot required
+  ansible.builtin.command:
+    cmd: "dnf needs-restarting -r"
+  register: reboot_required
+  ignore_errors: True
+  changed_when: False
+  failed_when: reboot_required.rc == 2
+
+- name: Reboot message
+  ansible.builtin.debug:
+    msg: Reboot required but skipped
+  when: reboot_required.rc == 1

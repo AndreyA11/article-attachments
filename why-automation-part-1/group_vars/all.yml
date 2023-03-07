@@ -1,0 +1,15 @@
+company_name: "Cool Guys LLC"
+duo_api: "api-SOMETHING.duosecurity.com"
+duo_access_keys: "Something Secret"
+duo_enabled: false
+duo_integration_key: "SOMETHING"
+LocalNTP: mylocaldomain.example.com time.windows.com
+permit_tcp_forwarding: no
+set_LocalNTP: False
+timezone: Europe/Moscow
+users:
+- admin
+- test
+- test1
+users_removed:
+- test2

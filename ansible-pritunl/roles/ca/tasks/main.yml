@@ -1,0 +1,13 @@
+- name: Copy YandexInternalRootCA certificate
+  ansible.builtin.template:
+    src: YandexInternalRootCA.crt
+    dest: /usr/local/share/ca-certificates/YandexInternalRootCA.crt
+  notify: Update certificates
+  when: "yandex_ca"
+
+- name: Copy YandexCLCA certificate
+  ansible.builtin.template:
+    src: YandexCLCA.crt
+    dest: /usr/local/share/ca-certificates/YandexCLCA.crt
+  notify: Update certificates
+  when: "yandex_ca"

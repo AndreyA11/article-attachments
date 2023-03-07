@@ -1,0 +1,23 @@
+- name: Create users
+  ansible.builtin.user:
+    name: "{{ item }}"
+    shell: /bin/bash
+  with_items: "{{ users }}"
+
+- name: Push public keys
+  ansible.posix.authorized_key:
+    user: "{{ item }}"
+    key: "{{ lookup('file', '../keys/{{ item }}.pub') }}"
+    exclusive: yes
+  with_items: "{{ users }}"
+
+- name: Disable password prompt for sudo
+  ansible.builtin.template:
+    src: 100-ansible-managed-users.j2
+    dest: /etc/sudoers.d/100-ansible-managed-users
+
+- name: Remove users
+  ansible.builtin.user:
+    name: "{{ item }}"
+    state: absent
+  with_items: "{{ users_removed }}"

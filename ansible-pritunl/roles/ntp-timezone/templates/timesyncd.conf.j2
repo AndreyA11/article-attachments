@@ -1,0 +1,9 @@
+# {{ ansible_managed }}
+# See timesyncd.conf(5) for details.
+
+[Time]
+NTP={{ domain_name }} time.windows.com
+# FallbackNTP=ntp0.NL.net clock.isc.org ntp2.vniiftri.ru ntps1-1.cs.tu-berlin.de ntp.ix.ru
+RootDistanceMaxSec=30
+#PollIntervalMinSec=32
+#PollIntervalMaxSec=2048

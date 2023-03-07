@@ -1,0 +1,20 @@
+# {{ ansible_managed }}
+[duo]
+; Duo integration key
+ikey = {{ duo_integration_key }}
+
+; Duo secret key
+skey = {{ secret.value }}
+
+; Duo API host
+host = {{ duo_api }}
+
+; `failmode = safe` In the event of errors with this configuration file or connection to the Duo service
+; this mode will allow login without 2FA.
+; `failmode = secure` This mode will deny access in the above cases. Misconfigurations with this setting
+; enabled may result in you being locked out of your system.
+failmode = {{ (permit_without_duo) | ternary('safe', 'secure') }}
+
+pushinfo = yes
+autopush = yes
+prompts = 1

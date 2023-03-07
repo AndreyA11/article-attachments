@@ -1,0 +1,13 @@
+- name: Netplan apply
+  ansible.builtin.shell: |
+    netplan apply
+
+- name: Reload nginx
+  ansible.builtin.systemd:
+    state: reloaded
+    name: nginx
+
+- name: Restart pritunl
+  ansible.builtin.systemd:
+    state: restarted
+    name: pritunl

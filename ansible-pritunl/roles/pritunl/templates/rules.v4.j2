@@ -1,0 +1,29 @@
+-A INPUT -i eth1 -p tcp -m tcp --dport 80 -j ACCEPT
+-A INPUT -i eth1 -p tcp -m tcp --dport 443 -j ACCEPT
+
+# VPN example_com
+-A INPUT -i eth1 -p tcp -m tcp --dport 13986 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
+
+# VPN Landysh
+-A INPUT -i eth1 -p tcp -m tcp --dport 12846 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
+
+# Everyone
+{% for item in vms_federation_servers %}
+-A FORWARD -s 10.12.64.0/18 -d {{ item }}/32 -p tcp -m tcp --dport 443 -j ACCEPT
+{% endfor %}
+
+# Landysh
+{% for item in vms_domain_controllers %}
+-A FORWARD -s 10.12.66.0/24 -d {{ item }}/32 -p tcp -m tcp --dport 53 -j ACCEPT
+-A FORWARD -s 10.12.66.0/24 -d {{ item }}/32 -p udp -m udp --dport 53 -j ACCEPT
+{% endfor %}
+{% for item in landysh_com %}
+-A FORWARD -s 10.12.66.0/24 -d {{ item }}/32 -p tcp -m tcp --dport 80 -j ACCEPT
+-A FORWARD -s 10.12.66.0/24 -d {{ item }}/32 -p tcp -m tcp --dport 443 -j ACCEPT
+{% endfor %}
+
+# example_com
+{% for item in example_com %}
+-A FORWARD -s 10.12.68.0/23 -d {{ item }}/32 -p tcp -m tcp --dport 80 -j ACCEPT
+-A FORWARD -s 10.12.68.0/23 -d {{ item }}/32 -p tcp -m tcp --dport 443 -j ACCEPT
+{% endfor %}
